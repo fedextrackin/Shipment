@@ -2020,7 +2020,11 @@ ${packageData.recipient_name}`;
     }
 
     function formatDate(dateString) {
-      return new Date(dateString).toLocaleDateString('en-US', {
+      // Fixed: Properly parse YYYY-MM-DD format to avoid timezone issues
+      const [year, month, day] = dateString.split('-').map(Number);
+      // Create date in local timezone (month is 0-indexed in JavaScript)
+      const date = new Date(year, month - 1, day);
+      return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
